@@ -1,0 +1,59 @@
+name: Build Xiaomi AX3600 (IPQ807x processor)
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: Prepare and build the image
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update and install feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Import config for Xiaomi AX3600
+        run: |
+          cp xiaomi_ax3600.config .config
+          make defconfig
+
+      - name: QoL fixes on default config
+        run: |
+          mkdir -p files/etc/uci-defaults
+          cat > files/etc/uci-defaults/99-qol_fixes << EOF
+          uci set pbuf.opt.memory_profile=auto
+          uci set network.globals.packet_steering=0
+          uci set firewall.@defaults[0].flow_offloading=0
+          uci set ecm.@general[0].enable_bridge_filtering=0
+          uci commit
+          EOF
+
+      - name: Download package sources
+        run: make download V=s
+
+      - name: Build tools
+        run: make tools/install -j $(($(nproc)+1)) V=s
+
+      - name: Build toolchain
+        run: make toolchain/install -j $(($(nproc)+1)) V=s
+
+      - name: Build target images
+        run: make -j $(($(nproc)+1)) V=s
+
+      - name: Get the current date
+        run: echo "NOW=$(date +%F-%H%M)" >> $GITHUB_ENV
+
+      - name: Create a release
+        uses: "ncipollo/release-action@v1"
+        with:
+          name: "Snapshot image for Xiaomi AX3600 ${{ env.NOW }}"
+          commit: "xiaomi_ax3600"
+          tag: "xiaomi_ax3600-${{ env.NOW }}"
+          generateReleaseNotes: true
+          makeLatest: false
+          artifacts: bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-initramfs-factory.ubi,bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-squashfs-sysupgrade.bin
+          token: "${{ secrets.GITHUB_TOKEN }}"
