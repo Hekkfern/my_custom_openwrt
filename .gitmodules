@@ -1,6 +1,8 @@
 [submodule "openwrt_official"]
 	path = openwrt_official
-	url = git@github.com:openwrt/openwrt.git
+	url = ../../openwrt/openwrt.git
+	branch = main
 [submodule "openwrt_nss"]
 	path = openwrt_nss
-	url = git@github.com:AgustinLorenzo/openwrt.git
+	url = ../../gustinLorenzo/openwrt.git
+	branch = main_nss
