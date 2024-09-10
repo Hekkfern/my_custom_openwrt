@@ -4,5 +4,5 @@
 	branch = main
 [submodule "openwrt_nss"]
 	path = openwrt_nss
-	url = ../../gustinLorenzo/openwrt.git
+	url = ../../AgustinLorenzo/openwrt.git
 	branch = main_nss
