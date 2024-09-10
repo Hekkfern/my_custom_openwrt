@@ -1,4 +1,4 @@
-name: Build Xiaomi AX3600 (IPQ807x processor)
+name: Build Xiaomi AX3600 OpenWrt image
 
 on: workflow_dispatch
 
@@ -10,18 +10,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
 
       - name: Update and install feeds
+        working-directory: ./openwrt_nss
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Import config for Xiaomi AX3600
         run: |
-          cp xiaomi_ax3600.config .config
+          cp xiaomi_ax3600.config openwrt_nss/.config
+          cd openwrt_nss
           make defconfig
 
       - name: QoL fixes on default config
+        working-directory: ./openwrt_nss
         run: |
           mkdir -p files/etc/uci-defaults
           cat > files/etc/uci-defaults/99-qol_fixes << EOF
@@ -33,15 +38,19 @@ jobs:
           EOF
 
       - name: Download package sources
+        working-directory: ./openwrt_nss
         run: make download V=s
 
       - name: Build tools
+        working-directory: ./openwrt_nss
         run: make tools/install -j $(($(nproc)+1)) V=s
 
       - name: Build toolchain
+        working-directory: ./openwrt_nss
         run: make toolchain/install -j $(($(nproc)+1)) V=s
 
       - name: Build target images
+        working-directory: ./openwrt_nss
         run: make -j $(($(nproc)+1)) V=s
 
       - name: Get the current date
