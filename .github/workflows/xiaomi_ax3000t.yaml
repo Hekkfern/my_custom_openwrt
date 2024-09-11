@@ -63,6 +63,6 @@ jobs:
           commit: "xiaomi_ax3000t"
           tag: "xiaomi_ax3000t-${{ env.NOW }}"
           generateReleaseNotes: true
-          makeLatest: false
+          makeLatest: true
           artifacts: bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-initramfs-factory.ubi,bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-squashfs-sysupgrade.bin
           token: "${{ secrets.GITHUB_TOKEN }}"
