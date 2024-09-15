@@ -2,7 +2,29 @@
 
 The goal of this repository is containing all the configuration and tools needed to generate *OpenWrt* builds for my home routers.
 
-## Getting started
+## Router configurations explained
+
+### Common
+
+* Dropbear removed. Instead, OpenSSH with SFTP support is installed
+* LUCI with nginx (and SSL support) installed
+* LUCI ttyd installed
+* LUCI WiFi-Schedule installed
+* wpad with OpenSSL installed
+
+### Xiaomi AX3600
+
+* ZeroTier installed
+* Unbound installed
+* Adblock-fast installed
+
+### Xiaomi AX3000T
+
+*
+
+
+
+## How-to
 
 First, clone the repository in your computer:
 
@@ -10,9 +32,7 @@ First, clone the repository in your computer:
 git clone --recursive git@github.com:AgustinLorenzo/openwrt.git
 ```
 
-## How to generate the builds
-
-### Manually
+## Generate builds manually
 
 [!IMPORTANT]
 Due to *OpenWrt* requirements, the following instructions are recommended to be done in a Linux machine.
@@ -20,7 +40,7 @@ Due to *OpenWrt* requirements, the following instructions are recommended to be 
 
 
 
-### Using GitHub Actions
+## Generate builds using GitHub Actions
 
 #### With `act`
 
