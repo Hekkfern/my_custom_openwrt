@@ -6,7 +6,7 @@ The goal of this repository is containing all the configuration and tools needed
 
 ### Common
 
-* Dropbear removed. Instead, OpenSSH with SFTP support is installed
+* Dropbear removed. Instead, OpenSSH with SFTP support installed
 * LUCI with nginx (and SSL support) installed
 * LUCI ttyd installed
 * LUCI WiFi-Schedule installed
@@ -22,8 +22,6 @@ The goal of this repository is containing all the configuration and tools needed
 
 *
 
-
-
 ## How-to
 
 First, clone the repository in your computer:
@@ -37,8 +35,19 @@ git clone --recursive git@github.com:AgustinLorenzo/openwrt.git
 [!IMPORTANT]
 Due to *OpenWrt* requirements, the following instructions are recommended to be done in a Linux machine.
 
+* For *Xiaomi AX3000T*:
 
+```sh
+cd repos/openwrt_official
 
+```
+
+* For *Xiaomi AX3600*:
+
+```sh
+cd repos/openwrt_nss
+
+```
 
 ## Generate builds using GitHub Actions
 
