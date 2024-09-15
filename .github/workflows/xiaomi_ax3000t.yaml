@@ -6,7 +6,7 @@ jobs:
   build:
     name: Prepare and build the image
     runs-on: ubuntu-22.04
-
+    container: ghcr.io/openwrt/buildbot/buildworker-v3.11.1:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -14,19 +14,19 @@ jobs:
           submodules: 'recursive'
 
       - name: Update and install feeds
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Import config for Xiaomi AX3000T
         run: |
-          cp xiaomi_ax3000t.config openwrt_official/.config
-          cd openwrt_official
+          cp configs/xiaomi_ax3000t/diffconfig repos/openwrt_official/.config
+          cd repos/openwrt_official
           make defconfig
 
       - name: QoL fixes on default config
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: |
           mkdir -p files/etc/uci-defaults
           cat > files/etc/uci-defaults/99-qol_fixes << EOF
@@ -38,19 +38,19 @@ jobs:
           EOF
 
       - name: Download package sources
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: make download V=s
 
       - name: Build tools
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: make tools/install -j $(($(nproc)+1)) V=s
 
       - name: Build toolchain
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: make toolchain/install -j $(($(nproc)+1)) V=s
 
       - name: Build target images
-        working-directory: openwrt_official
+        working-directory: repos/openwrt_official
         run: make -j $(($(nproc)+1)) V=s
 
       - name: Get the current date
@@ -63,6 +63,6 @@ jobs:
           commit: "xiaomi_ax3000t"
           tag: "xiaomi_ax3000t-${{ env.NOW }}"
           generateReleaseNotes: true
-          makeLatest: true
-          artifacts: bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-initramfs-factory.ubi,bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-squashfs-sysupgrade.bin
+          makeLatest: false
+          artifacts: repos/openwrt_official/bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-initramfs-factory.ubi,repos/openwrt_official/bin/targets/mediatek/filogic/openwrt-mediatek-filogic-xiaomi_mi-router-ax3000t-squashfs-sysupgrade.bin
           token: "${{ secrets.GITHUB_TOKEN }}"

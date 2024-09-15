@@ -63,6 +63,6 @@ jobs:
           commit: "xiaomi_ax3600"
           tag: "xiaomi_ax3600-${{ env.NOW }}"
           generateReleaseNotes: true
-          makeLatest: true
+          makeLatest: false
           artifacts: bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-initramfs-factory.ubi,bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-squashfs-sysupgrade.bin
           token: "${{ secrets.GITHUB_TOKEN }}"
