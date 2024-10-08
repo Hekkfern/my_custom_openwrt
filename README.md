@@ -6,21 +6,18 @@ The goal of this repository is containing all the configuration and tools needed
 
 ### Common
 
-* Dropbear removed. Instead, OpenSSH with SFTP support installed
-* LUCI with nginx (and SSL support) installed
+* LUCI with SSL support installed
 * LUCI ttyd installed
 * LUCI WiFi-Schedule installed
-* wpad with OpenSSL installed
 
 ### Xiaomi AX3600
 
 * ZeroTier installed
-* Unbound installed
-* Adblock-fast installed
+* LUCI HTTPS-over-DNS installed
 
 ### Xiaomi AX3000T
 
-*
+No extra packages
 
 ## How to generate the builder docker image
 
